@@ -16,7 +16,7 @@
         <huike.version>3.4.0</huike.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
         <druid.version>1.2.4</druid.version>
         <bitwalker.version>1.21</bitwalker.version>
@@ -32,7 +32,8 @@
         <poi.version>4.1.2</poi.version>
         <velocity.version>1.7</velocity.version>
         <jwt.version>0.9.1</jwt.version>
-        <org.projectlombok.version>1.18.8</org.projectlombok.version>
+        <org.projectlombok.version>1.18.30</org.projectlombok.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <miniio.version>8.3.3</miniio.version>
         <esay_excel.version>2.2.6</esay_excel.version>
         <xxl_job.version>2.1.0</xxl_job.version>
@@ -255,13 +256,21 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <!-- 使用新定义的版本属性 -->
+            <version>${maven-compiler-plugin.version}</version>
+            <configuration>
+                <source>${java.version}</source>
+                <target>${java.version}</target>
+                <encoding>${project.build.sourceEncoding}</encoding>
+                <!-- 添加 Lombok 兼容参数 -->
+                <compilerArgs>
+                    <arg>-parameters</arg>
+                    <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                    <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                    <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                </compilerArgs>
+            </configuration>
             </plugin>
 
             <plugin>
