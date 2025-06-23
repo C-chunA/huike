@@ -302,41 +302,7 @@
                     <displayCommandOutputs>true</displayCommandOutputs>
                 </configuration>
             </plugin>
-
-             <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <version>${spring-boot.version}</version>
-            <configuration>
-                <mainClass>com.huike.HuikeAdminApplication</mainClass>
-            </configuration>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>repackage</goal>
-                    </goals>
-                </execution>
-            </executions>
-            </plugin>
         </plugins>
-
-        <plugins>
-        <!-- 现有插件配置 -->
-    </plugins>
-    
-    <!-- 新增插件版本管理 -->
-    <pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot-maven-plugin.version}</version>
-                <configuration>
-                    <mainClass>com.huike.HuikeAdminApplication</mainClass> <!-- 根据实际主类修改 -->
-                </configuration>
-            </plugin>
-        </plugins>
-    </pluginManagement>
 
 
     </build>
