@@ -22,6 +22,19 @@
             <groupId>com.huike</groupId>
             <artifactId>huike-common</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.huike</groupId>
+            <artifactId>huike-common</artifactId>
+            <version>${project.version}</version>
+    </dependency>
+    
+    <!-- 添加 framework 模块依赖 -->
+        <dependency>
+            <groupId>com.huike</groupId>
+            <artifactId>huike-framework</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
