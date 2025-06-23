@@ -17,9 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
-        <!-- 升级 Spring Boot 版本以支持 Java 17 -->
         <spring-boot.version>2.7.18</spring-boot.version>
-        <!-- 修复安全漏洞的依赖版本 -->
         <druid.version>1.2.18</druid.version>
         <fastjson.version>1.2.83</fastjson.version>
         <commons.fileupload.version>1.5</commons.fileupload.version>
@@ -27,7 +25,6 @@
         <poi.version>5.2.5</poi.version>
         <velocity.version>2.3</velocity.version>
         <jwt.version>0.12.5</jwt.version>
-        <!-- 其他依赖版本 -->
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
         <bitwalker.version>1.21</bitwalker.version>
         <swagger.version>2.9.2</swagger.version>
@@ -42,12 +39,13 @@
         <esay_excel.version>2.2.6</esay_excel.version>
         <xxl_job.version>2.1.0</xxl_job.version>
         <okHttp.version>4.9.0</okHttp.version>
+        <!-- 添加 wagon-ssh 版本属性 -->
+        <wagon-ssh.version>3.5.3</wagon-ssh.version>
     </properties>
 
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
-
             <!-- SpringBoot的依赖配置-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -153,7 +151,6 @@
                 <version>${kaptcha.version}</version>
             </dependency>
 
-
             <!-- 核心模块-->
             <dependency>
                 <groupId>com.huike</groupId>
@@ -187,8 +184,6 @@
                 <artifactId>huike-business</artifactId>
                 <version>${huike.version}</version>
             </dependency>
-
-            <!--规则-->
 
             <!-- 更新测试依赖版本 -->
             <dependency>
@@ -246,8 +241,8 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <!-- 升级以支持 Java 17 -->
-                <version>3.8.3</version>
+                <!-- 使用可用的版本 -->
+                <version>${wagon-ssh.version}</version>
             </extension>
         </extensions>
 
@@ -270,7 +265,7 @@
                 </configuration>
             </plugin>
 
-            <!-- 关键修改：添加 Spring Boot Maven 插件 -->
+            <!-- Spring Boot Maven 插件 -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -296,7 +291,6 @@
                     <dependency>
                         <groupId>com.jcraft</groupId>
                         <artifactId>jsch</artifactId>
-                        <!-- 升级以修复安全漏洞 -->
                         <version>0.1.55</version>
                     </dependency>
                     <dependency>
@@ -340,6 +334,19 @@
     </repositories>
 
     <pluginRepositories>
+        <!-- 添加中央仓库 -->
+        <pluginRepository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        
         <pluginRepository>
             <id>public</id>
             <name>aliyun nexus</name>
