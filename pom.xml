@@ -17,23 +17,25 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
-        <spring-boot.version>2.2.13.RELEASE</spring-boot.version>
-        <spring-boot-maven-plugin.version>2.2.13.RELEASE</spring-boot-maven-plugin.version>
+        <!-- 升级 Spring Boot 版本以支持 Java 17 -->
+        <spring-boot.version>2.7.18</spring-boot.version>
+        <!-- 修复安全漏洞的依赖版本 -->
+        <druid.version>1.2.18</druid.version>
+        <fastjson.version>1.2.83</fastjson.version>
+        <commons.fileupload.version>1.5</commons.fileupload.version>
+        <commons.collections.version>3.2.4</commons.collections.version>
+        <poi.version>5.2.5</poi.version>
+        <velocity.version>2.3</velocity.version>
+        <jwt.version>0.12.5</jwt.version>
+        <!-- 其他依赖版本 -->
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
-        <druid.version>1.2.4</druid.version>
         <bitwalker.version>1.21</bitwalker.version>
         <swagger.version>2.9.2</swagger.version>
         <kaptcha.version>2.3.2</kaptcha.version>
         <pagehelper.boot.version>1.3.0</pagehelper.boot.version>
-        <fastjson.version>1.2.75</fastjson.version>
-        <oshi.version>5.6.0</oshi.version>
-        <jna.version>5.7.0</jna.version>
-        <commons.io.version>2.5</commons.io.version>
-        <commons.fileupload.version>1.3.3</commons.fileupload.version>
-        <commons.collections.version>3.2.2</commons.collections.version>
-        <poi.version>4.1.2</poi.version>
-        <velocity.version>1.7</velocity.version>
-        <jwt.version>0.9.1</jwt.version>
+        <oshi.version>6.4.8</oshi.version>
+        <jna.version>5.14.0</jna.version>
+        <commons.io.version>2.16.1</commons.io.version>
         <org.projectlombok.version>1.18.30</org.projectlombok.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <miniio.version>8.3.3</miniio.version>
@@ -50,7 +52,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>  <!-- 改为属性引用 -->
+                <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -116,17 +118,11 @@
                 <version>${poi.version}</version>
             </dependency>
 
-            <!--velocity代码生成使用模板 -->
+            <!--velocity代码生成使用模板（升级到2.3） -->
             <dependency>
                 <groupId>org.apache.velocity</groupId>
-                <artifactId>velocity</artifactId>
+                <artifactId>velocity-engine-core</artifactId>
                 <version>${velocity.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>commons-collections</groupId>
-                        <artifactId>commons-collections</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <!-- collections工具类 -->
@@ -194,10 +190,11 @@
 
             <!--规则-->
 
+            <!-- 更新测试依赖版本 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
-                <version>2.2.13.RELEASE</version>
+                <version>${spring-boot.version}</version>
                 <scope>test</scope>
             </dependency>
 
@@ -244,35 +241,51 @@
     </modules>
     <packaging>pom</packaging>
 
-
-
     <build>
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>2.8</version>
+                <!-- 升级以支持 Java 17 -->
+                <version>3.8.3</version>
             </extension>
         </extensions>
 
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <!-- 使用新定义的版本属性 -->
-            <version>${maven-compiler-plugin.version}</version>
-            <configuration>
-                <source>${java.version}</source>
-                <target>${java.version}</target>
-                <encoding>${project.build.sourceEncoding}</encoding>
-                <!-- 添加 Lombok 兼容参数 -->
-                <compilerArgs>
-                    <arg>-parameters</arg>
-                    <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
-                    <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
-                    <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
-                </compilerArgs>
-            </configuration>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <!-- 添加 Lombok 兼容参数 -->
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <!-- 关键修改：添加 Spring Boot Maven 插件 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <!-- 根据实际主类修改 -->
+                    <mainClass>com.huike.HuikeAdminApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -283,7 +296,8 @@
                     <dependency>
                         <groupId>com.jcraft</groupId>
                         <artifactId>jsch</artifactId>
-                        <version>0.1.54</version>
+                        <!-- 升级以修复安全漏洞 -->
+                        <version>0.1.55</version>
                     </dependency>
                     <dependency>
                         <groupId>org.bouncycastle</groupId>
@@ -303,8 +317,6 @@
                 </configuration>
             </plugin>
         </plugins>
-
-
     </build>
 
     <repositories>
@@ -325,7 +337,6 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-
     </repositories>
 
     <pluginRepositories>
@@ -341,6 +352,4 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
-
 </project>
