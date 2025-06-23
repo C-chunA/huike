@@ -59,6 +59,7 @@
         <dependency>
             <groupId>com.huike</groupId>
             <artifactId>huike-system</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
     </dependencies>
