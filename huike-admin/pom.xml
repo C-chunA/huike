@@ -17,7 +17,9 @@
 
     <dependencies>
 
-        <!-- Mysql驱动包 -->
+        <!-- spring-boot-devtools -->
+
+         <!-- Mysql驱动包 -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -35,19 +37,18 @@
             </exclusions>
         </dependency>
 
-        <!-- 定时任务 -->
+        <!-- 定时任务-->
         <dependency>
             <groupId>com.huike</groupId>
             <artifactId>huike-task</artifactId>
-            <version>${huike.version}</version>
-            <scope>compile</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>org.mybatis</groupId>
                     <artifactId>mybatis</artifactId>
+                    <groupId>org.mybatis</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
+
 
         <dependency>
             <groupId>org.mybatis</groupId>
@@ -55,7 +56,7 @@
             <version>3.5.7</version>
         </dependency>
 
-        <!-- 线索管理 -->
+        <!-- 线索管理-->
         <dependency>
             <groupId>com.huike</groupId>
             <artifactId>huike-clues</artifactId>
@@ -66,33 +67,37 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.huike</groupId>
             <artifactId>huike-business</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.huike</groupId>
             <artifactId>huike-contract</artifactId>
-            <version>${huike.version}</version>
+            <version>3.4.0</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.huike</groupId>
             <artifactId>huike-report</artifactId>
-            <version>${huike.version}</version>
+            <version>3.4.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.huike</groupId>
+            <artifactId>huike-task</artifactId>
+            <version>3.4.0</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.huike</groupId>
             <artifactId>huike-mybatis-review</artifactId>
-            <version>${huike.version}</version>
+            <version>3.4.0</version>
             <scope>compile</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -112,18 +117,16 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.1.0</version>
+            <plugin>   
+                <groupId>org.apache.maven.plugins</groupId>   
+                <artifactId>maven-war-plugin</artifactId>   
+                <version>3.1.0</version>   
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <warName>${project.artifactId}</warName>
-                </configuration>
-            </plugin>
+                </configuration>   
+           </plugin>   
         </plugins>
-
         <finalName>${project.artifactId}</finalName>
     </build>
 

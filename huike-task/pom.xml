@@ -25,7 +25,6 @@
         <dependency>
             <groupId>com.huike</groupId>
             <artifactId>huike-common</artifactId>
-            <version>${huike.version}</version>
         </dependency>
 
     </dependencies>
