@@ -39,6 +39,8 @@
         <okHttp.version>4.9.0</okHttp.version>
         <!-- 添加Maven编译器插件版本 -->
         <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+        <!-- 添加Java兼容性版本 -->
+        <maven.compiler.release>8</maven.compiler.release>
     </properties>
 
     <!-- 依赖声明 -->
@@ -252,38 +254,58 @@
                 <version>2.8</version>
             </extension>
         </extensions>
-
+        
+        <!-- 关键修改：使用 pluginManagement 确保配置继承 -->
+        <pluginManagement>
+            <plugins>
+                <!-- 编译器插件配置 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <release>${maven.compiler.release}</release>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <!-- 添加注解处理器配置 -->
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${org.projectlombok.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                        <!-- 禁用增量编译 -->
+                        <useIncrementalCompilation>false</useIncrementalCompilation>
+                        <!-- 强制使用外部进程 -->
+                        <fork>true</fork>
+                    </configuration>
+                </plugin>
+                
+                <!-- 资源插件配置 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.3.1</version>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        
         <plugins>
-            <!-- 关键修改1: 升级并配置编译器插件 -->
+            <!-- 确保所有模块使用编译器插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version> <!-- 升级到3.11.0 -->
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <!-- 添加注解处理器配置 -->
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${org.projectlombok.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                    <!-- 禁用增量编译 -->
-                    <useIncrementalCompilation>false</useIncrementalCompilation>
-                </configuration>
             </plugin>
-
-            <!-- 关键修改2: 添加资源插件确保资源文件正确复制 -->
+            
+            <!-- 确保所有模块使用资源插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
             </plugin>
 
             <plugin>
