@@ -37,6 +37,8 @@
         <esay_excel.version>2.2.6</esay_excel.version>
         <xxl_job.version>2.1.0</xxl_job.version>
         <okHttp.version>4.9.0</okHttp.version>
+        <!-- 添加Maven编译器插件版本 -->
+        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -203,7 +205,7 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${org.projectlombok.version}</version>
-		<scope>provided</scope>
+                <scope>provided</scope>
             </dependency>
 
             <!-- easy Excel -->
@@ -242,8 +244,6 @@
     </modules>
     <packaging>pom</packaging>
 
-
-
     <build>
         <extensions>
             <extension>
@@ -254,13 +254,34 @@
         </extensions>
 
         <plugins>
+            <!-- 关键修改1: 升级并配置编译器插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>${maven.compiler.plugin.version}</version> <!-- 升级到3.11.0 -->
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <!-- 添加注解处理器配置 -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${org.projectlombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <!-- 禁用增量编译 -->
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                </configuration>
+            </plugin>
+
+            <!-- 关键修改2: 添加资源插件确保资源文件正确复制 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
@@ -293,8 +314,6 @@
                 </configuration>
             </plugin>
         </plugins>
-
-
     </build>
 
     <repositories>
@@ -315,7 +334,6 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-
     </repositories>
 
     <pluginRepositories>
@@ -331,6 +349,4 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
-
 </project>
