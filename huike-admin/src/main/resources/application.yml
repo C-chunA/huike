@@ -9,7 +9,7 @@ huike:
   # 实例演示开关
   demoEnabled: true
   #profile: /root/soft/uploadPath
-  profile: D:\root\soft\uploadPath
+  profile: /var/jenkins_home/root/soft/uploadPath
   # 获取ip地址开关
   addressEnabled: false
   # 验证码类型 math 数组计算 char 字符验证
